@@ -1,6 +1,7 @@
 import Main from "../pages/MainPage.vue";
 import NotFound from "../pages/NotFoundPage.vue";
 
+
 const routes = [
   {
     path: "/",
