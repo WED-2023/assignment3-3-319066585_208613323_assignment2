@@ -1,5 +1,5 @@
 <template>
-  <div class="card h-100">
+  <router-link :to="`/recipes/${recipe.id}`" class="card h-100 text-decoration-none text-dark">
     <img
       v-if="recipe.image"
       :src="recipe.image"
@@ -11,8 +11,10 @@
       <p class="card-text">{{ recipe.readyInMinutes }} minutes</p>
       <p class="card-text">{{ recipe.aggregateLikes }} likes</p>
     </div>
-  </div>
+  </router-link>
 </template>
+
+
 
 <script>
 export default {
@@ -31,5 +33,11 @@ export default {
   width: 100%;
   height: 200px;
   object-fit: cover;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease-in-out;
+  cursor: pointer;
 }
 </style>

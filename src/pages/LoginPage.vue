@@ -81,7 +81,7 @@ export default {
         await window.axios.post('/Login', {
           username: state.username,
           password: state.password,
-        });
+        }, { withCredentials: true });
         window.store.login(state.username);
         console.log('Login successful');
         window.router.push('/main');
