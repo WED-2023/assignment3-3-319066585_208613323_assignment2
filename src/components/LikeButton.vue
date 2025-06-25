@@ -27,7 +27,7 @@ export default {
         console.log('0');
         await this.axios({
           method,
-          url: this.$root.store.server_domain + "/users/favorites",
+          url: this.$root.store.server_domain + "/recipes/like/" + this.recipeId,
           withCredentials: true
         });
         console.log('1');
