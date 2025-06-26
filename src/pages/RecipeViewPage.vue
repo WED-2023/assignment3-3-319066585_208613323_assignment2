@@ -23,6 +23,12 @@
         @like-toggled="recipe.isLiked = $event"
       />
 
+      <AddToFavoritesButton
+        :recipeId="recipe.id"
+        :initialLiked="recipe.isLiked"
+        @favorite-toggled="recipe.isLiked = $event"
+      />
+
       <div class="recipe-body">
         <div class="row">
           <div class="col-md-6">
@@ -54,6 +60,7 @@
 
 <script>
 import LikeButton from "@/components/LikeButton.vue";
+import AddToFavoritesButton from "@/components/AddToFavoritesButton.vue";
 
 export default {
   data() {
@@ -62,7 +69,8 @@ export default {
     };
   },
   components: {
-    LikeButton
+    LikeButton,
+    AddToFavoritesButton
   },
   async created() {
     try {
