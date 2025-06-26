@@ -4,11 +4,14 @@
 
     <RecipePreviewList title="Random Recipes" class="RandomRecipes center" />
 
+
     <div v-if="!store.username" class="text-center mt-4">
       <router-link :to="{ name: 'login' }">
         <button class="btn btn-primary">You need to Login to view this</button>
       </router-link>
     </div>
+    <router-link to="/favorites">My Favorite Recipes</router-link>
+
 
     <RecipePreviewList
       title="Last Viewed Recipes"
