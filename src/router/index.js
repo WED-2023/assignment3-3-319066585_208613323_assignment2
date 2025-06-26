@@ -42,6 +42,11 @@ const routes = [
     path: '/about',
     name: 'about',
     component: () => import("../pages/AboutPage.vue"),
+  },
+  {
+    path: '/user/create-recipe',
+    name: 'create-recipe',
+    component: () => import('../pages/CreateRecipePage.vue')
   }
 ];
 

@@ -12,6 +12,8 @@
       <span v-else>
         {{ store.username }}:
         <button @click="logout" class="btn btn-link p-0">Logout</button> |
+        <!-- <router-link :to="{ name: 'favorites' }">Favorites</router-link> | -->
+        <!-- <router-link :to="{ name: 'newRecipe' }">Create New Recipe</router-link> -->
       </span>
     </div>
     <router-view />
