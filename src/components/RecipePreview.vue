@@ -1,5 +1,6 @@
 <template>
-  <router-link :to="`/recipes/${recipe.id}`" class="card h-100 text-decoration-none text-dark">
+
+  <router-link :to="`/recipes/${recipe.id}`" class="card card-hover h-100 text-decoration-none text-dark">
     <img
       v-if="recipe.image"
       :src="recipe.image"
@@ -34,58 +35,78 @@
 
 
 <script>
-import LikeButton from './LikeButton.vue';
-export default {
-  components: {
-    LikeButton
-  },
-  name: "RecipePreview",
-  props: {
-    recipe: {
-      type: Object,
-      required: true
+  import LikeButton from './LikeButton.vue';
+  export default {
+    components: {
+      LikeButton
+    },
+    name: "RecipePreview",
+    props: {
+      recipe: {
+        type: Object,
+        required: true
+      }
     }
+    
   }
-  
-}
 </script>
 
 <style scoped>
-.recipe-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
+  .card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-.hover-shadow:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: box-shadow 0.3s ease-in-out;
-  cursor: pointer;
-}
+  .card-hover:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
 
-.tags {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
+  .recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: opacity 0.3s ease-in-out;
+  }
 
-.tag {
-  padding: 5px 10px;
-  border-radius: 15px;
-  color: white;
-  font-weight: bold;
-  font-size: 0.9em;
-}
+  .card-hover:hover .recipe-image {
+    opacity: 0.7;
+  }
 
-.vegan {
-  background-color: #4caf50;
-}
-.vegetarian {
-  background-color: #8bc34a;
-}
-.glutenfree {
-  background-color: #ffc022;
-}
+  .recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .hover-shadow:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .tags {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+
+  .vegan {
+    background-color: #4caf50;
+  }
+  .vegetarian {
+    background-color: #8bc34a;
+  }
+  .glutenfree {
+    background-color: #ffc022;
+  }
 </style>
