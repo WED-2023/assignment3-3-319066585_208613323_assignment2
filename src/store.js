@@ -11,6 +11,7 @@ const store = reactive({
   },
 
   logout() {
+    window.axios.post('/Logout', {}, { withCredentials: true })
     console.log("logout");
     localStorage.removeItem('username');
     this.username = undefined;

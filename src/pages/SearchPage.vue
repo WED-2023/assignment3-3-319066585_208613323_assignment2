@@ -96,6 +96,8 @@ export default {
     const numberOfResults = ref(5);
     const ingredients = ['Dairy', 'Egg', 'Gluten', 'Grain', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Sulfite', 'Tree Nut', 'Wheat'];
 
+    console.log(window.store.username);
+
     const searchRecipes = async () => {
       isLoading.value = true;
       error.value = null;

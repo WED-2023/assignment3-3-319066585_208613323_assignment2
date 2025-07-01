@@ -196,10 +196,6 @@ export default {
 
     const register = async () => {
       const valid = await v$.value.$validate();
-      console.log("Password:", state.password);
-      console.log("Confirm:", state.confirmPassword);
-      console.log('Validation result:', valid);
-      console.log(JSON.stringify(v$.value.$errors, null, 2));
       if (!valid) return;
 
       try {

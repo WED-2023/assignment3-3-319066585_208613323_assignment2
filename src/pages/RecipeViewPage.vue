@@ -23,12 +23,6 @@
         @like-toggled="recipe.isLiked = $event"
       />
 
-      <AddToFavoritesButton
-        :recipeId="recipe.id"
-        :initialLiked="recipe.isLiked"
-        @favorite-toggled="recipe.isLiked = $event"
-      />
-
       <div class="recipe-body">
         <div class="row">
           <div class="col-md-6">
@@ -60,7 +54,6 @@
 
 <script>
 import LikeButton from "@/components/LikeButton.vue";
-import AddToFavoritesButton from "@/components/AddToFavoritesButton.vue";
 
 export default {
   data() {
@@ -70,7 +63,6 @@ export default {
   },
   components: {
     LikeButton,
-    AddToFavoritesButton
   },
   async created() {
     try {
@@ -163,7 +155,7 @@ export default {
   background-color: #8bc34a;
 }
 .glutenfree {
-  background-color: #ff5722;
+  background-color: #ffc022;
 }
 
 .row {

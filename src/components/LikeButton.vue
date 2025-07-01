@@ -1,8 +1,10 @@
 <template>
-  <div @click="toggleLike" style="cursor: pointer;">
-    <span v-if="liked">👍 Liked ({{ likes }})</span>
-    <span v-else>👍 Like ({{ likes }})</span>
-  </div>
+  <button
+    @click="toggleLike"
+    :class="['like-button', { liked }]"
+  >
+    👍 {{ liked ? 'Liked' : 'Like' }}
+  </button>
 </template>
 
 <script>
@@ -18,23 +20,24 @@ export default {
     async toggleLike() {
       try {
         const method = this.liked ? "delete" : "post";
-        if (this.$root.store.user) {
-            console.log("User is logged in:", this.$root.store.user.username);
+        if (window.store.username) {
+            console.log("User is logged in:", window.store.username);
         } else {
             console.log("User is not logged in");
         }
+        if (!window.store.username) {
+          alert("You must be logged in to like a recipe.");
+          return;
+        }
 
-        console.log('0');
         await this.axios({
           method,
           url: this.$root.store.server_domain + "/recipes/like/" + this.recipeId,
           withCredentials: true
         });
-        console.log('1');
         this.liked = !this.liked;
         this.likes += this.liked ? 1 : -1;
         this.$emit("like-toggled", this.liked);
-        console.log('2');
       } catch (err) {
         alert("Error toggling like");
         console.error(err);
@@ -45,24 +48,31 @@ export default {
 </script>
 
 <style scoped>
+.like {
+    display: inline-flex;
+}
+
+
 .like-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 0.9em;
+  border: 2px solid #4267B2;
+  background-color: white;
   color: #4267B2;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform 0.1s;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .like-button:hover {
-  transform: scale(1.1);
+  background-color: #e6f0ff;
 }
 
-.liked {
-  color: #e0245e;
+.like-button.liked {
+  background-color: #007bff;
+  color: white;
 }
+
 
 </style>
