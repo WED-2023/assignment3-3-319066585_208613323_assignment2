@@ -84,7 +84,7 @@ export default {
         }, { withCredentials: true });
         window.store.login(state.username);
         console.log('Login successful');
-        window.router.push('/main');
+        window.router.push('/');
       } catch (err) {
         console.log('Login failed:');
         state.submitError = err.response?.data?.message || 'Unexpected error.';
