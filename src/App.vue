@@ -1,68 +1,89 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link> |
-      <router-link :to="{ name: 'search' }">Search</router-link> |
-      <router-link :to="{ name: 'about' }">About</router-link> |
-      <span v-if="!store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link> |
-        <router-link :to="{ name: 'login' }">Login</router-link> |
-      </span>
-      <span v-else>
-        {{ store.username }}:
-        <button @click="logout" class="btn btn-link p-0">Logout</button> |
-        <router-link :to="{ name: 'favorites' }">Favorites</router-link> |
-        <!-- <router-link :to="{ name: 'newRecipe' }">Create New Recipe</router-link> -->
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+      <router-link class="navbar-brand fw-bold" :to="{ name: 'main' }">Vue Recipes</router-link>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'search' }">Search</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <template v-if="!store.username">
+            <li class="nav-item">
+              <span class="nav-link">Guest</span>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
+            </li>
+          </template>
+          <template v-else>
+            <li class="nav-item">
+              <span class="nav-link">{{ store.username }}</span>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'favorites' }">Favorites</router-link>
+            </li>
+            <li class="nav-item">
+              <button @click="logout" class="btn btn-sm btn-outline-light ms-2">Logout</button>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </nav>
     <router-view />
   </div>
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue';
+  import { getCurrentInstance } from 'vue';
 
-export default {
-  name: "App",
-  setup() {
-    const internalInstance = getCurrentInstance();
-    const store = internalInstance.appContext.config.globalProperties.store;
-    const toast = internalInstance.appContext.config.globalProperties.toast;
-    const router = internalInstance.appContext.config.globalProperties.$router;
+  export default {
+    name: "App",
+    setup() {
+      const internalInstance = getCurrentInstance();
+      const store = internalInstance.appContext.config.globalProperties.store;
+      const toast = internalInstance.appContext.config.globalProperties.toast;
+      const router = internalInstance.appContext.config.globalProperties.$router;
 
-    const logout = () => {
-      store.logout();
-      toast("Logout", "User logged out successfully", "success");
-      router.push("/").catch(() => {});
-    };
+      const logout = () => {
+        store.logout();
+        toast("Logout", "User logged out successfully", "success");
+        router.push("/").catch(() => {});
+      };
 
-    return { store, logout };
-  }
-}
+      return { store, logout };
+    }
+  };
 </script>
 
 <style lang="scss">
-@import "@/scss/form-style.scss";
+  @import "@/scss/form-style.scss";
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  min-height: 100vh;
-}
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
 
-#nav {
-  padding: 30px;
-}
+  .navbar {
+    margin-bottom: 20px;
+  }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  .nav-link {
+    color: white !important;
+    margin-right: 10px;
+  }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .navbar-brand {
+    font-weight: bold;
+    color: #42b983 !important;
+  }
 </style>
