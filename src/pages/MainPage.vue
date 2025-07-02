@@ -10,7 +10,6 @@
         <button class="btn btn-primary">You need to Login to view this</button>
       </router-link>
     </div>
-    <router-link to="/favorites">My Favorite Recipes</router-link>
 
 
     <RecipePreviewList
