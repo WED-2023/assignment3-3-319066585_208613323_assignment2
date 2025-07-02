@@ -4,19 +4,23 @@
     <b-form @submit.prevent="register">
       <!-- Username -->
       <b-form-group label="Username" label-for="username">
-        <b-form-input
+        <!-- <b-form-input
           id="username"
           v-model="state.username"
           @blur="v$.username.$touch()"
+          :state="v$.username.$dirty ? !v$.username.$invalid : null"
+        /> -->
+        <b-form-input
+          v-model="state.username"
+          @blur="v$.username.$touch()"
+          :state="v$.username.$dirty ? !v$.username.$invalid : null"
         />
-        <b-form-invalid-feedback v-if="v$.username.$error">
-          <div v-if="!v$.username.required">Username is required.</div>
-          <div v-else-if="!v$.username.minLength || !v$.username.maxLength">
-            Username must be 3–8 characters.
-          </div>
-          <div v-else-if="!v$.username.alpha">Username must contain only letters.</div>
+        <b-form-invalid-feedback v-if="v$.username.$error && v$.username.$dirty">
+          Username must be 3–8 letters only.
         </b-form-invalid-feedback>
       </b-form-group>
+
+
 
       <!-- Firstname -->
       <b-form-group label="Firstname" label-for="Firstname">
@@ -24,13 +28,11 @@
           id="Firstname"
           v-model="state.firstname"
           @blur="v$.firstname.$touch()"
+          :state="v$.firstname.$dirty ? !v$.firstname.$invalid : null"
         />
-        <b-form-invalid-feedback v-if="v$.firstname.$error">
-          <div v-if="!v$.firstname.required">Firstname is required.</div>
-          <div v-else-if="!v$.firstname.minLength">
-            Firstname must be at least 3 characters.
-          </div>
-          <div v-else-if="!v$.firstname.alpha">Firstname must contain only letters.</div>
+        <b-form-invalid-feedback v-if="v$.firstname.$dirty && v$.firstname.$error">
+          <div v-if="!v$.firstname.required.$response">Firstname is required.</div>
+          <div v-else-if="!v$.firstname.alpha.$response">Firstname must contain only letters.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -41,12 +43,9 @@
           v-model="state.lastname"
           @blur="v$.lastname.$touch()"
         />
-        <b-form-invalid-feedback v-if="v$.lastname.$error">
-          <div v-if="!v$.lastname.required">Lastname is required.</div>
-          <div v-else-if="!v$.lastname.minLength">
-            Lastname must be at least 3 characters.
-          </div>
-          <div v-else-if="!v$.lastname.alpha">Lastname must contain only letters.</div>
+        <b-form-invalid-feedback v-if="v$.lastname.$dirty && v$.lastname.$error">
+          <div v-if="!v$.lastname.required.$response">Lastname is required.</div>
+          <div v-else-if="!v$.lastname.alpha.$response">Lastname must contain only letters.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -70,14 +69,18 @@
           type="password"
           v-model="state.password"
           @blur="v$.password.$touch()"
+          :state="v$.password.$dirty ? !v$.password.$invalid : null"
         />
-        <b-form-invalid-feedback v-if="v$.password.$error">
-          <div v-if="!v$.password.required">Password is required.</div>
-          <div v-else-if="!v$.password.minLength || !v$.password.maxLength">
+        <b-form-invalid-feedback v-if="v$.password.$dirty && v$.password.$error">
+          <div v-if="!v$.password.required.$response">Password is required.</div>
+          <div v-else-if="!v$.password.minLength.$response || !v$.password.maxLength.$response">
             Password must be 5–10 characters.
           </div>
+          <div v-else-if="!v$.password.hasNumber.$response">Password must contain at least one number.</div>
+          <div v-else-if="!v$.password.hasSpecialChar.$response">Password must contain at least one special character.</div>
         </b-form-invalid-feedback>
       </b-form-group>
+
 
       <!-- Confirm Password -->
       <b-form-group label="Confirm Password" label-for="confirmPassword">
@@ -86,14 +89,14 @@
           type="password"
           v-model="state.confirmPassword"
           @blur="v$.confirmPassword.$touch()"
+          :state="v$.confirmPassword.$dirty ? !v$.confirmPassword.$invalid : null"
         />
-        <b-form-invalid-feedback v-if="v$.confirmPassword.$error">
-          <div v-if="!v$.confirmPassword.required">Confirmation is required.</div>
-          <div v-else-if="!v$.confirmPassword.sameAsPassword">
-            Passwords do not match.
-          </div>
+        <b-form-invalid-feedback v-if="v$.confirmPassword.$dirty && v$.confirmPassword.$error">
+          <div v-if="!v$.confirmPassword.required.$response">Confirmation is required.</div>
+          <div v-else-if="!v$.confirmPassword.sameAsPassword.$response">Passwords do not match.</div>
         </b-form-invalid-feedback>
       </b-form-group>
+
 
       <!-- Email -->
       <b-form-group label="Email" label-for="email">
@@ -102,15 +105,23 @@
           type="email"
           v-model="state.email"
           @blur="v$.email.$touch()"
+          :state="v$.email.$dirty ? !v$.email.$invalid : null"
         />
-        <b-form-invalid-feedback v-if="v$.email.$error">
-          <div v-if="!v$.email.required">Email is required.</div>
-          <div v-else-if="!v$.email.email">Email must be valid.</div>
+        <b-form-invalid-feedback v-if="v$.email.$dirty && v$.email.$error">
+          <div v-if="!v$.email.required.$response">Email is required.</div>
+          <div v-else-if="!v$.email.email.$response">Email must be valid.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
 
-      <b-button type="submit" variant="success" class="w-100">Register</b-button>
+      <b-button
+        type="submit"
+        variant="success"
+        class="w-100"
+        :disabled="v$.$invalid"
+      >
+        Register
+      </b-button>
 
       <b-alert
         variant="danger"
@@ -143,6 +154,7 @@ import {
 } from '@vuelidate/validators';
 import rawCountries from '../assets/countries';
 
+
 export default {
   name: 'RegisterPage',
   setup() {
@@ -166,18 +178,18 @@ export default {
       },
       firstname: {
         required,
-        minLength: minLength(3),
         alpha,
       },
       lastname: {
         required,
-        minLength: minLength(3),
         alpha,
       },
       password: {
         required,
         minLength: minLength(5),
         maxLength: maxLength(10),
+        hasNumber: (value) => /\d/.test(value),
+        hasSpecialChar: (value) => /[^A-Za-z0-9]/.test(value)
       },
       confirmPassword: {
         required,
@@ -207,8 +219,9 @@ export default {
           country: state.country,
           email: state.email,
         });
-        window.toast('Registration successful', 'You can now login', 'success');
         window.router.push('/Login');
+        window.toast('Registration successful', 'You can now login', 'success');
+
       } catch (err) {
         state.submitError = err.response?.data?.message || 'Unexpected error.';
       }
