@@ -46,9 +46,24 @@
         type: Object,
         required: true
       }
-    }
-    
-  }
+    },
+      computed: {
+        normalizedRecipe() {
+          return {
+            id: this.recipe.id || this.recipe.recipe_id,
+            title: this.recipe.title,
+            image: this.recipe.image || this.recipe.photo,
+            readyInMinutes: this.recipe.readyInMinutes || this.recipe.preparation_time,
+            popularity:
+              this.recipe.aggregateLikes ?? this.recipe.popularity ?? 0,
+            vegan: this.recipe.vegan ?? this.recipe.isVegan ?? false,
+            vegetarian: this.recipe.vegetarian ?? this.recipe.isVegetarian ?? false,
+            glutenFree: this.recipe.glutenFree ?? this.recipe.isGlutenFree ?? false
+          }
+            
+        }
+      }
+    };
 </script>
 
 <style scoped>

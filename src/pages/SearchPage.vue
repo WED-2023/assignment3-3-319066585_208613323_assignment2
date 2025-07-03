@@ -1,67 +1,56 @@
 <template>
   <div class="container mt-4">
-    <h1 class="title">Search Page</h1>
+    <h1 class="title text-center mb-4">Search Page</h1>
 
     <b-form @submit.prevent="searchRecipes">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-4">
-          <b-form-group label="Search for recipes:">
-            <b-form-input
-              v-model="query"
-              placeholder="Enter keyword (e.g., pizza)"
-              class="form-control"
-            />
-          </b-form-group>
-        </div>
-
-        <div class="col-md-2">
-          <b-form-group label="Cuisine:">
-            <b-form-select
-              v-model="cuisine"
-              :options="cuisineOptions"
-              class="form-control"
-            />
-          </b-form-group>
-        </div>
-
-        <div class="col-md-2">
-          <b-form-group label="Diet:">
+      <div class="d-flex flex-wrap justify-content-center align-items-end gap-3 mb-4">
+        <b-form-input
+          v-model="query"
+          placeholder="Search Recipes"
+          class="flex-grow-1"
+        />
+        <b-form-group label="Cuisine:" class="mb-0 flex-grow-1"> 
+          <b-form-select 
+            v-model="cuisine"
+            :options="cuisineOptions"
+            class="flex-grow-1"
+          />
+        </b-form-group>
+          <b-form-group label="Diet:" class="mb-0 flex-grow-1">
             <b-form-select
               v-model="diet"
               :options="dietOptions"
-              class="form-control"
+              class="flex-grow-1"
             />
-          </b-form-group>
-        </div>
+        </b-form-group>
 
-        <div class="col-md-4">
-          <b-form-group label="Intolerances:">
-            <b-form-checkbox-group
-              v-model="intolerances"
-              :options="ingredients"
-              stacked
-              class="form-control"
-            />
-          </b-form-group>
-        </div>
-
-        <b-form-group label="Number of Results:">
+        <b-form-group label="Intolerances:" class="mb-0 flex-grow-1">
+          <b-form-checkbox-group
+            v-model="intolerances"
+            :options="ingredients"
+            name="intolerances"
+            buttons
+            button-variant="outline-primary"
+            class="d-flex flex-wrap gap-2"
+          />
+        </b-form-group>
+        <b-form-group label="Number of Results:" class="mb-0 flex-grow-1">
           <b-form-select
             v-model="numberOfResults"
-            :options="[5, 10, 15, 50]"
-            class="form-control"
+            :options="[5, 10, 15]"
+            class="flex-grow-1"
           />
         </b-form-group>
 
-        <div class="col-md-1">
-          <b-button type="submit" variant="primary" class="w-100">Search</b-button>
-        </div>
+        <b-button type="submit" variant="warning" class="px-4">
+          <b-icon icon="search" class="me-1"></b-icon> Search
+        </b-button>
       </div>
     </b-form>
 
-    <div v-if="isLoading" class="alert alert-info mt-3">Searching...</div>
-    <div v-if="error" class="alert alert-danger mt-3">{{ error }}</div>
-    <div v-if="results.length === 0 && !isLoading" class="mt-3">No results found.</div>
+    <div v-if="isLoading" class="alert alert-info mt-3 text-center">Searching...</div>
+    <div v-if="error" class="alert alert-danger mt-3 text-center">{{ error }}</div>
+    <div v-if="results.length === 0 && !isLoading" class="mt-3 text-center">No results found.</div>
 
     <div class="row mt-4">
       <div v-for="recipe in results" :key="recipe.id" class="col-md-4 mb-4">
@@ -95,8 +84,6 @@ export default {
     const error = ref(null);
     const numberOfResults = ref(5);
     const ingredients = ['Dairy', 'Egg', 'Gluten', 'Grain', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Sulfite', 'Tree Nut', 'Wheat'];
-
-    console.log(window.store.username);
 
     const searchRecipes = async () => {
       isLoading.value = true;
@@ -133,7 +120,13 @@ export default {
       error,
       searchRecipes,
     };
-
   },
 };
 </script>
+
+<style scoped>
+.b-form-checkbox-group .btn {
+  min-width: 120px;
+  font-size: 0.9rem;
+}
+</style>

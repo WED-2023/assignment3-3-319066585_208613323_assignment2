@@ -1,76 +1,176 @@
 <template>
-    <b-modal
-      :visible="showModal"
-      @hide="$emit('update:showModal', false)"
-      title="Create New Recipe"
-      @ok="submitRecipe"
-    >
-    <b-form @submit.prevent="submitRecipe">
-      <b-form-group label="title">
-        <b-form-input v-model="recipe.title" required></b-form-input>
-      </b-form-group>
+  <div class="container mt-4">
+    <b-button variant="primary" @click="showCreateModal = true">
+      Create New Recipe
+    </b-button>
 
-      <b-form-group label="preparation time (in minutes)">
-        <b-form-input v-model.number="recipe.readyInMinutes" type="number" required></b-form-input>
-      </b-form-group>
+    <b-modal v-model="showCreateModal" title="Create New Recipe" hide-footer>
+      <b-form @submit.prevent="submitRecipe">
+        <!-- Title -->
+        <b-form-group label="Recipe Title">
+          <b-form-input v-model="newRecipe.title" required />
+        </b-form-group>
 
-      <b-form-group label="image URL">
-        <b-form-input v-model="recipe.image" placeholder="image"></b-form-input>
-      </b-form-group>
+        <!-- Image URL -->
+        <b-form-group label="Image URL (optional)">
+          <b-form-input v-model="newRecipe.photo" />
+        </b-form-group>
 
-      <b-form-group label="ingredients (separated by commas)">
-        <b-form-textarea v-model="recipe.ingredients" rows="3"></b-form-textarea>
-      </b-form-group>
+        <!-- Preparation Time -->
+        <b-form-group label="Preparation Time (in minutes)">
+          <b-form-input type="number" min="1" v-model.number="newRecipe.preparation_time" required />
+        </b-form-group>
 
-      <b-form-group label="instructions (separated by commas)">
-        <b-form-textarea v-model="recipe.instructions" rows="3"></b-form-textarea>
-      </b-form-group>
-    </b-form>
-  </b-modal>
+        <!-- Instructions -->
+        <b-form-group label="Preparation Steps">
+          <div
+            v-for="(step, index) in newRecipe.instructions"
+            :key="'step-' + index"
+            class="d-flex mb-2"
+          >
+            <b-form-input
+              v-model="step.step"
+              :placeholder="'Step ' + (index + 1)"
+              required
+              class="me-2"
+            />
+            <b-button variant="danger" @click="removeInstruction(index)" size="sm">x</b-button>
+          </div>
+          <b-button variant="success" @click="addInstruction" size="sm">Add Step</b-button>
+        </b-form-group>
+
+        <!-- Ingredients -->
+        <b-form-group label="Ingredients">
+          <div
+            v-for="(ingredient, index) in newRecipe.ingredients"
+            :key="'ingredient-' + index"
+            class="d-flex mb-2"
+          >
+            <b-form-input
+              v-model="ingredient.name"
+              placeholder="Ingredient name"
+              required
+              class="me-2"
+            />
+            <b-form-input
+              v-model="ingredient.amount"
+              type="number"
+              min="0"
+              step="0.1"
+              placeholder="Amount"
+              required
+              class="me-2"
+            />
+            <b-form-input
+              v-model="ingredient.unit"
+              placeholder="Unit (e.g. grams, ounces)"
+              class="me-2"
+            />
+            <b-button variant="danger" @click="removeIngredient(index)" size="sm">x</b-button>
+          </div>
+          <b-button variant="success" @click="addIngredient" size="sm">Add Ingredient</b-button>
+        </b-form-group>
+
+        <!-- Diet -->
+        <b-form-group label="Diet Types">
+          <b-form-checkbox v-model="newRecipe.isVegan">Vegan</b-form-checkbox>
+          <b-form-checkbox v-model="newRecipe.isVegetarian">Vegetarian</b-form-checkbox>
+          <b-form-checkbox v-model="newRecipe.isGlutenFree">Gluten Free</b-form-checkbox>
+        </b-form-group>
+
+        <b-button type="submit" variant="primary" class="mt-3" :disabled="!formValid">
+          Save Recipe
+        </b-button>
+      </b-form>
+    </b-modal>
+  </div>
 </template>
 
 <script>
 export default {
   name: "CreateRecipeModal",
-  props: {
-    showModal: Boolean
-  },
-  emits: ['update:showModal', 'recipe-created'],
   data() {
     return {
-      recipe: {
-        title: "",
-        readyInMinutes: 0,
-        aggregateLikes: 0,
-        image: "",
-        ingredients: "",
-        instructions: ""
+      showCreateModal: false,
+      newRecipe: {
+        title: '',
+        photo: '',
+        preparation_time: null,
+        instructions: [{ step: '' }],
+        ingredients: [{ id: null, name: '', amount: '', unit: '' }],
+        isVegan: false,
+        isVegetarian: false,
+        isGlutenFree: false
       }
     };
   },
+  computed: {
+    formValid() {
+      const r = this.newRecipe;
+      return (
+        r.title &&
+        r.preparation_time &&
+        r.instructions.length &&
+        r.instructions &&
+        r.ingredients.length &&
+        r.ingredients
+      );
+    }
+  },
   methods: {
+    addInstruction() {
+      this.newRecipe.instructions.push({ step: '' });
+    },
+    removeInstruction(index) {
+      this.newRecipe.instructions.splice(index, 1);
+    },
+    addIngredient() {
+      this.newRecipe.ingredients.push({ id: null, name: '', amount: '', unit: '' });
+    },
+    removeIngredient(index) {
+      this.newRecipe.ingredients.splice(index, 1);
+    },
     async submitRecipe() {
       try {
+        // Add "number" field to instructions
+        const instructions = this.newRecipe.instructions.map((step, idx) => ({
+          number: idx + 1,
+          step: step.step
+        }));
+
         const payload = {
-          title: this.recipe.title,
-          readyInMinutes: this.recipe.readyInMinutes,
-          aggregateLikes: this.recipe.aggregateLikes,
-          image: this.recipe.image,
-          ingredients: this.recipe.ingredients.split(",").map(i => i.trim()),
-          instructions: this.recipe.instructions.split(",").map(s => s.trim()),
+          title: this.newRecipe.title,
+          photo: this.newRecipe.photo,
+          preparation_time: this.newRecipe.preparation_time,
+          ingredients: this.newRecipe.ingredients,
+          instructions: instructions,   
+          isVegan: this.newRecipe.isVegan ? 1 : 0,
+          isVegetarian: this.newRecipe.isVegetarian ? 1 : 0,
+          isGlutenFree: this.newRecipe.isGlutenFree ? 1 : 0
         };
 
-        const response = await this.axios.post(
-          this.$root.store.server_domain + "/users/myRecipes",
-          payload,
-          { withCredentials: true }
-        );
+        await this.axios.post('/users/myRecipes', payload);
+        alert('Recipe saved successfully!');
 
-        this.$emit("recipe-created", response.data);
-        this.$emit("update:showModal", false);
-      } catch (error) {
-        console.error("Error creating new recipe:", error);
+
+        this.showCreateModal = false;
+        this.resetForm();
+        this.$emit('refreshRecipes');
+      } catch (err) {
+        alert(err.response?.data || 'Failed to create recipe');
       }
+    },
+    resetForm() {
+      this.newRecipe = {
+        title: '',
+        photo: '',
+        preparation_time: null,
+        instructions: [{ step: '' }],
+        ingredients: [{ id: null, name: '', amount: '', unit: '' }],
+        isVegan: false,
+        isVegetarian: false,
+        isGlutenFree: false
+      };
     }
   }
 };

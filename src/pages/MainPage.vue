@@ -11,6 +11,12 @@
       </router-link>
     </div>
 
+    <div v-else class="text-center mt-4">
+      <router-link :to="{ name: 'create-recipe' }">
+        <b-button variant="primary" @click="showCreateModal = true">create New Recipe</b-button>
+      </router-link>
+    </div>
+
 
     <RecipePreviewList
       title="Last Viewed Recipes"

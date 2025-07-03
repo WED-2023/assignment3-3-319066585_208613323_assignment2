@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/favorites',
     name: 'favorites',
-    component: () => import('../pages/FavoriteRecipes.vue')
+    component: () => import('../pages/FavoriteRecipesPage.vue')
   },
   {
     path: '/about',
@@ -44,10 +44,21 @@ const routes = [
     component: () => import("../pages/AboutPage.vue"),
   },
   {
-    path: '/user/create-recipe',
+    path: '/myRecipes',
     name: 'create-recipe',
     component: () => import('../pages/CreateRecipePage.vue')
+  },
+  {
+    path: '/myRecipes',
+    name: 'view-my-recipes',
+    component: () => import('../pages/MyRecipesPage.vue')
+  },
+  {
+    path: '/myRecipes/:recipeId',
+    name: 'view MyRecipe',
+    component: () => import('../pages/MyRecipeViewPage.vue')
   }
+
 ];
 
 export default routes;
