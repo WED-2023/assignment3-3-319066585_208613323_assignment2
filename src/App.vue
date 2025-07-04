@@ -35,6 +35,12 @@
               <router-link class="nav-link" :to="{ name: 'view-my-recipes' }">My Recipes</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'create-recipe' }">Add Recipe</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'family' }">Family Recipes</router-link>
+            </li>
+            <li class="nav-item">
               <button @click="logout" class="btn btn-sm btn-outline-light ms-2">Logout</button>
             </li>
           </template>

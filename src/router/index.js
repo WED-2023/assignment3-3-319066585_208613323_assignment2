@@ -46,7 +46,7 @@ const routes = [
   {
     path: '/myRecipes',
     name: 'create-recipe',
-    component: () => import('../pages/CreateRecipePage.vue')
+    component: () => import('@/components/CreateRecipeModal.vue')
   },
   {
     path: '/myRecipes',
@@ -57,8 +57,12 @@ const routes = [
     path: '/myRecipes/:recipeId',
     name: 'view MyRecipe',
     component: () => import('../pages/MyRecipeViewPage.vue')
-  }
-
+  },
+  {
+    path: '/family',
+    name: 'family',
+    component: () => import('../pages/FamilyRecipesPage.vue')
+  },
 ];
 
 export default routes;

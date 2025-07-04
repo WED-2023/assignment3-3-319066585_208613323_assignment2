@@ -34,7 +34,7 @@
         </div>
 
         <div v-else>
-          <h4 class="mb-3">Last liked recipes</h4>
+          <h3 class="mb-3">More Recipes</h3>
           <div class="vertical-recipes">
             <RecipePreviewList :recipes="randomRecipes" />
           </div>

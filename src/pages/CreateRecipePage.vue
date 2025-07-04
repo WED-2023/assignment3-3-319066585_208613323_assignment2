@@ -12,7 +12,7 @@ export default {
   components: { CreateRecipeModal },
   data() {
     return {
-      showModal: false
+      showModal: true
     };
   },
   methods: {
