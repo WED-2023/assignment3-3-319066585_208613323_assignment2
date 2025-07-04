@@ -1,6 +1,10 @@
 <template>
   <div class="container">
     <h3>{{ title }}</h3>
+
+    <div class="text-center">
+      <button class="btn btn-primary" @click="updateRecipes">Refresh Recipes</button>
+    </div>
     
     <div class="row">
       <div class="col" v-for="r in recipes" :key="r.id">
