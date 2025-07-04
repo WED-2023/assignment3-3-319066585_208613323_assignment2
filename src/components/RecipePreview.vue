@@ -21,9 +21,9 @@
             <span v-if="recipe.vegetarian" class="tag vegetarian">🥦 Vegetarian</span>
             <span v-if="recipe.glutenFree" class="tag glutenfree">🚫 Gluten</span>
             <LikeButton
-              :recipeId="recipe.id"
-              :initialLiked="recipe.isLiked"
-              :initialLikes="recipe.aggregateLikes"
+              :recipeId="normalizedRecipe.id"
+              :initialLiked="normalizedRecipe.isLiked"
+              :initialLikes="normalizedRecipe.popularity"
               @like-toggled="handleLikeToggled"
             />
           </div>
@@ -58,7 +58,8 @@
               this.recipe.aggregateLikes ?? this.recipe.popularity ?? 0,
             vegan: this.recipe.vegan ?? this.recipe.isVegan ?? false,
             vegetarian: this.recipe.vegetarian ?? this.recipe.isVegetarian ?? false,
-            glutenFree: this.recipe.glutenFree ?? this.recipe.isGlutenFree ?? false
+            glutenFree: this.recipe.glutenFree ?? this.recipe.isGlutenFree ?? false,
+            isLiked: this.recipe.isLiked ?? false
           }
             
         }
@@ -78,7 +79,7 @@
 
   .recipe-image {
     width: 100%;
-    height: 200px;
+    height: 400px;
     object-fit: cover;
     transition: opacity 0.3s ease-in-out;
   }

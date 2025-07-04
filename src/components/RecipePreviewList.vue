@@ -1,15 +1,16 @@
 <template>
   <div class="container">
     <h3>{{ title }}</h3>
-
-    <div class="text-center">
-      <button class="btn btn-primary" @click="updateRecipes">Refresh Recipes</button>
-    </div>
     
-    <div class="row">
+    <div class="col">
       <div class="col" v-for="r in recipes" :key="r.id">
         <RecipePreview class="recipePreview" :recipe="r" />
       </div>
+    </div>
+    <div class="text-center">
+      <button class="btn btn-outline-primary" @click="updateRecipes" :disabled="isLoading">
+        Refresh 🔄
+      </button>
     </div>
   </div>
 </template>
@@ -56,5 +57,19 @@ export default {
 <style scoped>
 .container {
   min-height: 400px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.recipePreview {
+  height: 100%;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
 }
 </style>

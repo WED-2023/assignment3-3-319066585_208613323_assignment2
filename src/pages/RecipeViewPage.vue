@@ -19,9 +19,9 @@
       <LikeButton
         :recipeId="recipe.id"
         :initialLiked="recipe.isLiked"
-        :initialLikes="recipe.aggregateLikes"
         @like-toggled="recipe.isLiked = $event"
       />
+
 
       <div class="recipe-body">
         <div class="row">
@@ -91,7 +91,7 @@ export default {
 
       let _recipe = {
         id: response.data.recipe.id,
-        isLiked: this.$root.store.liked_recipes?.includes(response.data.recipe.id),
+        isLiked: response.data.recipe.isLiked ?? false,
         vegan: response.data.recipe.vegan,
         vegetarian: response.data.recipe.vegetarian,
         glutenFree: response.data.recipe.glutenFree,
