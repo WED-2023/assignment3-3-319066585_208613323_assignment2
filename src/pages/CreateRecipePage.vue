@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button @click="showModal = true">Create New Recpie</b-button>
+    <!-- <b-button @click="showModal = true">Create New Recpie</b-button> -->
     <CreateRecipeModal v-model:showModal="showModal" @recipe-created="onRecipeCreated" />
   </div>
 </template>
