@@ -72,4 +72,16 @@ export default {
   max-width: 600px;
   margin: auto;
 }
+
+.btn {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 0.9em;
+  border: 2px solid #4267B2;
+  background-color: white;
+  color: #4267B2;
+  cursor: pointer;
+  transition: 0.3s;
+}
 </style>
