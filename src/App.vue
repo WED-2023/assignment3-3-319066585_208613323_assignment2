@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <router-link class="navbar-brand fw-bold" :to="{ name: 'main' }">Vue Recipes</router-link>
+      <router-link class="navbar-brand fw-bold" :to="{ name: 'main' }">H&T Recipes</router-link>
 
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -15,7 +15,7 @@
         <ul class="navbar-nav">
           <template v-if="!store.username">
             <li class="nav-item">
-              <span class="nav-link">Guest</span>
+              <span class="nav-link">Hello Guest</span>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
